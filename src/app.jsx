@@ -1,6 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import Index from './pages/index'
 
+import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
+import './style/util.css'
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -22,22 +24,13 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/my/my'
+      'pages/editTarget/editTarget'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    },
-    tabBar: {
-      list: [{
-        pagePath: 'pages/index/index',
-        text: '首页'
-      }, {
-        pagePath: 'pages/my/my',
-        text: '我的'
-      }]
     }
   }
 
