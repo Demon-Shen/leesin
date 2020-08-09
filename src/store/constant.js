@@ -1,0 +1,5 @@
+export const ADD_TARGET = "ADD_TARGET"
+
+export const UPDATE_TARGET = "UPDATE_TARGET"
+
+export const CHOOSE_CURRENT_TARGET = "CHOOSE_CURRENT_TARGET"

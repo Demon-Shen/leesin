@@ -1,12 +1,25 @@
 import Taro, { Component } from '@tarojs/taro'
-import { ScrollView } from '@tarojs/components'
+import { ScrollView, View } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import moment from 'moment'
 
-import './index.scss'
+// import connect from '../../utils/connection'
 import avatar from '../../asset/img/avatar.png'
-
 import server from '../../server/index'
 
-export default class Index extends Component {
+import { connect } from '@tarojs/redux';
+import * as targetAction from '../../store/actions/target'
+
+import './index.scss'
+
+@connect(() => ({
+  
+}), (dispatch) => ({
+  chooseCurrentTarget (params) {
+    dispatch(targetAction.chooseCurrentTarget(params))
+  }
+}))
+class Index extends Component {
 
   constructor(props) {
     super(props)
@@ -14,26 +27,25 @@ export default class Index extends Component {
     this.state = {
       targetList: []
     }
+
+    console.log(this)
+    
+    this.goToAddTarget = this.goToAddTarget.bind(this)
+    this.goToEditTarget = this.goToEditTarget.bind(this)
   }
 
   componentWillMount () {
     Taro.login({
       success: async (res) => {
         if (res.errMsg === 'login:ok') {
-          console.log(res)
-          // TODO调用后端登陆接口，获取用户信息
-
           const userInfo = await server.login({
             jsCode: res.code
           })
           
-          console.log(userInfo)
           // 查询用户名下的目标，并展示
           const targetList = await server.getTargetList({
             appUserNum: userInfo.appUserNum
           })
-
-          console.log(targetList)
           this.setState({
             targetList
           })
@@ -59,22 +71,58 @@ export default class Index extends Component {
     navigationBarTitleText: '葱匆'
   }
 
+  goToAddTarget() {
+    const { chooseCurrentTarget } = this.props
+    chooseCurrentTarget(null)
+    Taro.navigateTo({
+      url: '/pages/editTarget/editTarget'
+    })
+  }
+
+  goToEditTarget(target) {
+    const { chooseCurrentTarget } = this.props
+
+    console.log(target)
+    chooseCurrentTarget(target)
+    Taro.navigateTo({
+      url: '/pages/editTarget/editTarget'
+    })
+  }
+
   _renderTargetList() {
     const {
       targetList
     } = this.state
+
     return (
-      <div>
+      <View>
         {
-          targetList.map((ele, ind) => {
+          targetList.map((target, ind) => {
             return (
-                <div key={ind}>
-                  { ele.targetName }
-                </div>
+                <View 
+                  key={target.targetNum}
+                  onClick={() => {
+                    this.goToEditTarget(target)
+                  }}
+                >
+                  <View>
+                    { target.targetName }
+                  </View>
+                  <View>
+                    打卡次数：{
+                      target.targetPickCount
+                    }
+                  </View>
+                  <View>
+                    上次打卡时间：{
+                      moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
+                    }
+                  </View>
+                </View>
             )
           })
         }
-      </div>
+      </View>
     )
   }
 
@@ -83,10 +131,23 @@ export default class Index extends Component {
       targetList
     } = this.state
     return (
-      <View className=''>
+      <View>
         <View>
-          <Image src={avatar}/>
-          <View>用户名</View>
+          <View className="d-flex p-3">
+            <Image src={avatar} className="avatar"/>
+            <View className="ml-3">
+              <View className="">用户名</View>
+            </View>
+          </View>
+          <View>
+            <AtButton 
+              type="secondary" 
+              className="add-target"
+              onClick={this.goToAddTarget}
+            >
+              添加任务
+            </AtButton>
+          </View>
         </View>
         <ScrollView>
           {
@@ -97,3 +158,5 @@ export default class Index extends Component {
     )
   }
 }
+
+export default Index

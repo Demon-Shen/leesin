@@ -1,15 +1,19 @@
 import Taro, { Component } from '@tarojs/taro'
-import Index from './pages/index'
+import Index from './pages/index/index'
+import configStore from './store/index';
 
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
 import './style/util.css'
 import './app.scss'
+import { Provider } from '@tarojs/redux'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
 //   require('nerv-devtools')
 // }
+
+const store = configStore()
 
 class App extends Component {
 
@@ -24,7 +28,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/editTarget/editTarget'
+      'pages/editTarget/editTarget',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -38,7 +42,9 @@ class App extends Component {
   // 请勿修改此函数
   render () {
     return (
-      <Index />
+      <Provider store={store}>
+        <Index />
+      </Provider>
     )
   }
 }

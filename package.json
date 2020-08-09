@@ -31,6 +31,7 @@
   "dependencies": {
     "@tarojs/components": "2.2.7",
     "@tarojs/components-qa": "2.2.7",
+    "@tarojs/redux": "^2.2.10",
     "@tarojs/router": "2.2.7",
     "@tarojs/taro": "2.2.7",
     "@tarojs/taro-alipay": "2.2.7",
@@ -42,9 +43,14 @@
     "@tarojs/taro-tt": "2.2.7",
     "@tarojs/taro-weapp": "2.2.7",
     "babel-runtime": "^6.26.0",
+    "moment": "^2.27.0",
     "nerv-devtools": "^1.5.5",
     "nervjs": "^1.5.5",
+    "react-redux": "^7.2.1",
     "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0",
     "regenerator-runtime": "0.11.1",
     "taro-ui": "^2.3.4"
   },

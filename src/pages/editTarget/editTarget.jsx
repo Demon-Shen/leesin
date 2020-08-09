@@ -1,9 +1,28 @@
 import Taro, { Component } from '@tarojs/taro'
+import { connect } from '@tarojs/redux';
 
-export default class my extends Component {
+@connect((state) => ({
+  currentTarget: state.target.currentTarget
+}), (dispatch) => ({
+
+}))
+class EditTarget extends Component {
   config = {
-    navigationBarTitleText: '我的'
+    navigationBarTitleText: '新增'
   }
+  constructor(props) {
+    super(props)
+  }
+
+  componentWillMount(props) {
+    console.log(this.props)
+    if (this.props.currentTarget) {
+      Taro.setNavigationBarTitle({
+        title: '编辑'
+      })
+    }
+  }
+
   render() {
     return (
       <View>
@@ -12,3 +31,5 @@ export default class my extends Component {
     )
   }
 }
+
+export default EditTarget
