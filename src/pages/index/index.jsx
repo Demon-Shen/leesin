@@ -1,23 +1,23 @@
 import Taro, { Component } from '@tarojs/taro'
 import { ScrollView, View } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtActivityIndicator, AtList, AtListItem } from 'taro-ui'
 import moment from 'moment'
 
-// import connect from '../../utils/connection'
 import avatar from '../../asset/img/avatar.png'
 import server from '../../server/index'
 
 import { connect } from '@tarojs/redux';
-import * as targetAction from '../../store/actions/target'
+import actions from '../../store/actions/index'
 
 import './index.scss'
 
 @connect(() => ({
   
 }), (dispatch) => ({
-  chooseCurrentTarget (params) {
-    dispatch(targetAction.chooseCurrentTarget(params))
-  }
+  getUserInfo: (params) => {
+    dispatch(actions.getUserInfo(params))
+  },
+  chooseCurrentTarget: (params) => dispatch(actions.chooseCurrentTarget(params))
 }))
 class Index extends Component {
 
@@ -25,30 +25,40 @@ class Index extends Component {
     super(props)
 
     this.state = {
-      targetList: []
-    }
+      targetList: [],
+      loading: false,
 
-    console.log(this)
+    }
     
     this.goToAddTarget = this.goToAddTarget.bind(this)
     this.goToEditTarget = this.goToEditTarget.bind(this)
+    this.loading = this.loading.bind(this)
   }
 
   componentWillMount () {
+    const { getUserInfo } = this.props
+
     Taro.login({
       success: async (res) => {
         if (res.errMsg === 'login:ok') {
-          const userInfo = await server.login({
-            jsCode: res.code
+          this.loading(true)
+          getUserInfo({
+            jsCode: res.code,
+            resolved: async res => {
+              this.loading(false)
+
+              // 查询用户名下的目标，并展示
+              const targetList = await server.getTargetListServer({
+                appUserNum: res.appUserNum
+              })
+              this.setState({
+                targetList
+              })
+            },
+            rejected: rej => {}
           })
           
-          // 查询用户名下的目标，并展示
-          const targetList = await server.getTargetList({
-            appUserNum: userInfo.appUserNum
-          })
-          this.setState({
-            targetList
-          })
+          
         } else {
           Taro.showToast('登陆失败' + res.errMsg)
         }
@@ -71,6 +81,12 @@ class Index extends Component {
     navigationBarTitleText: '葱匆'
   }
 
+  loading(status) {
+    this.setState({
+      loading: status
+    })
+  }
+
   goToAddTarget() {
     const { chooseCurrentTarget } = this.props
     chooseCurrentTarget(null)
@@ -81,8 +97,6 @@ class Index extends Component {
 
   goToEditTarget(target) {
     const { chooseCurrentTarget } = this.props
-
-    console.log(target)
     chooseCurrentTarget(target)
     Taro.navigateTo({
       url: '/pages/editTarget/editTarget'
@@ -112,12 +126,15 @@ class Index extends Component {
                     打卡次数：{
                       target.targetPickCount
                     }
-                  </View>
-                  <View>
-                    上次打卡时间：{
-                      moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
-                    }
-                  </View>
+                  </View> 
+                  {
+                    target.lastPickTime ? 
+                      <View>
+                        上次打卡时间：{
+                          moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
+                        }
+                      </View> : ''
+                  }
                 </View>
             )
           })
@@ -128,7 +145,8 @@ class Index extends Component {
 
   render () {
     const {
-      targetList
+      targetList,
+      loading
     } = this.state
     return (
       <View>
@@ -154,6 +172,10 @@ class Index extends Component {
             this._renderTargetList()
           }
         </ScrollView>
+        <AtActivityIndicator 
+          isOpened={loading} 
+          mode="center" 
+        />
       </View>
     )
   }

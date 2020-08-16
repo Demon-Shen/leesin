@@ -48,3 +48,6 @@ export const post = (url, data) => {
   return request(url, data, 'POST')
 }
 
+export const deleteRequest = (url, data) => {
+  return request(url, data, 'DELETE')
+}

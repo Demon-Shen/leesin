@@ -1,5 +1,11 @@
+export const GET_TARGET_LIST = "GET_TARGET_LIST"
+
 export const ADD_TARGET = "ADD_TARGET"
 
 export const UPDATE_TARGET = "UPDATE_TARGET"
 
 export const CHOOSE_CURRENT_TARGET = "CHOOSE_CURRENT_TARGET"
+
+export const DELETE_TARGET = "DELETE_TARGET"
+
+export const LOGIN = "LOGIN"
