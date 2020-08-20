@@ -1,17 +1,17 @@
 import { post, get, deleteRequest } from '../utils/request'
 
-export const getTargetListServer = (param) => {
-  return get('/target/list', param)
+export const getTargetListServer = (params) => {
+  return get('/target/list', params)
 }
 
-export const addTargetServer = (param) => {
-  return post('/target/add', param)
+export const addTargetServer = (params) => {
+  return post('/target/add', params)
 }
 
-export const updateTargetServer = (param) => {
-  return post('/target/update', param)
+export const updateTargetServer = (params) => {
+  return post('/target/update', params)
 }
 
-export const deleteTargetServer = (param) => {
-  return deleteRequest('/target/delete', param)
+export const deleteTargetServer = (params) => {
+  return deleteRequest('/target/delete', params)
 }

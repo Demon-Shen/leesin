@@ -1,5 +1,5 @@
 import { post, get } from '../utils/request'
 
-export const login = (param) => {
-  return post('/user/openid', param)
+export const login = (params) => {
+  return post('/user/openid', params)
 }

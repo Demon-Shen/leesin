@@ -27,6 +27,7 @@ class EditTarget extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.onReset = this.onReset.bind(this)
     this.deleteTarget = this.deleteTarget.bind(this)
+    this.loading = this.loading.bind(this)
   }
 
   componentWillMount() {
@@ -41,72 +42,62 @@ class EditTarget extends Component {
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     const {
       targetName,
       targetContent,
     } = this.state
 
     const { appUserNum, currentTarget, updateTarget, addTarget } = this.props
-    this.setState({
-      loading: true
-    }, async () => {
-      if (currentTarget) {
-        // 修改
-        updateTarget({
-          ...currentTarget,
-          targetName,
-          targetContent,
-          appUserNum,
-          resovled: (res) => {
-            this.setState({
-              loading: false
-            })
-            Taro.showToast({
-              title: '修改成功',
-              icon: 'success',
-              complete: () => {
-                setTimeout(() => {
-                  Taro.navigateBack()
-                }, 1500);
-              }
-            })
-          },
-          rejected: (rej) => {
-            this.setState({
-              loading: false
-            })
-          }
-        })
-        
-      } else {
-        // 新增
-        addTarget({
-          targetName,
-          targetContent,
-          appUserNum,
-          resovled: (res) => {
-            this.setState({
-              loading: false
-            })
-            Taro.showToast({
-              title: '添加成功',
-              icon: 'success',
-              complete: () => {
-                setTimeout(() => {
-                  Taro.navigateBack()
-                }, 1500);
-              }
-            })
-          },
-          rejected: (rej) => {
-            this.setState({
-              loading: false
-            })
-          }
-        })
-      }
-    })
+    this.loading(true)
+    if (currentTarget) {
+      // 修改
+      updateTarget({
+        ...currentTarget,
+        targetName,
+        targetContent,
+        appUserNum,
+        resolved: (res) => {
+          this.loading(false)
+          Taro.showToast({
+            title: '修改成功',
+            icon: 'success',
+            complete: () => {
+              setTimeout(() => {
+                Taro.navigateBack()
+              }, 1000);
+            }
+          })
+        },
+        rejected: (rej) => {
+          this.loading(false)
+        }
+      })
+      
+    } else {
+      // 新增
+      addTarget({
+        targetName,
+        targetContent,
+        appUserNum,
+        resolved: (res) => {
+          this.loading(false)
+          Taro.showToast({
+            title: '添加成功',
+            icon: 'success',
+            complete: () => {
+              setTimeout(() => {
+                Taro.navigateBack()
+              }, 1000);
+            }
+          })
+        },
+        rejected: (rej) => {
+          this.loading(false)
+        }
+      })
+    }
+    
   }
 
   onReset() {
@@ -130,7 +121,7 @@ class EditTarget extends Component {
     })
     deleteTarget({
       targetNum: currentTarget.targetNum,
-      resovled: (res) => {
+      resolved: (res) => {
         this.setState({
           loading: false
         })
@@ -140,7 +131,7 @@ class EditTarget extends Component {
           complete: () => {
             setTimeout(() => {
               Taro.navigateBack()
-            }, 1500);
+            }, 1000);
           }
         })
       },
@@ -149,6 +140,12 @@ class EditTarget extends Component {
           loading: false
         })
       }
+    })
+  }
+
+  loading(status) {
+    this.setState({
+      loading: status
     })
   }
 

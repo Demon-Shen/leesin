@@ -29,6 +29,8 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/editTarget/editTarget',
+      'pages/pickedRecords/pickedRecords',
+      'pages/pickDaily/pickDaily'
     ],
     window: {
       backgroundTextStyle: 'light',

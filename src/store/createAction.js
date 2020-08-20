@@ -8,12 +8,20 @@ export default function createAction(type, createHandle, metaHandle) {
       }
   }
   return (arg) =>{
+      let resolved = arg && arg.resolved
+      let rejected = arg && arg.rejected
       if (typeof(createHandle) === "function") {
-          action.payload = createHandle(arg)
+        if (arg) {
+          delete arg.resolved
+          delete arg.rejected
+        }
+        action.payload = createHandle(arg)
       }
-
-      if (typeof(metaHandle) === "function" && arg.resolved && arg.rejected) {
-          action.meta = metaHandle(arg)
+      if (typeof(metaHandle) === "function" && resolved && rejected) {
+        action.meta = metaHandle({
+            resolved,
+            rejected
+        })
       }
       return action
   }

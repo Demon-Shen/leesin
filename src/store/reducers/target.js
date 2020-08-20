@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { ADD_TARGET, UPDATE_TARGET, CHOOSE_CURRENT_TARGET, GET_TARGET_LIST, DELETE_TARGET } from '../constant'
 import createReducer from '../createReducer'
 import { addTarget } from '../../server/appTarget'
@@ -20,8 +21,8 @@ const actionHandle = {
   },
   [ADD_TARGET]: (state, action) => {
     const newTarget = action.payload || {}
-    let targetList = state.targetList
-    targetList.push(newTarget)
+    let targetList = _.cloneDeep(state.targetList)
+    targetList.unshift(newTarget)
     return {
       targetList
     }
@@ -36,7 +37,8 @@ const actionHandle = {
       }
     })
     return {
-      targetList
+      targetList,
+      currentTarget: newTarget
     }
   },
   [DELETE_TARGET]: (state, action) => {

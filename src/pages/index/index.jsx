@@ -11,12 +11,12 @@ import actions from '../../store/actions/index'
 
 import './index.scss'
 
-@connect(() => ({
-  
+@connect((state) => ({
+  currentTarget: state.target.currentTarget,
+  targetList: state.target.targetList
 }), (dispatch) => ({
-  getUserInfo: (params) => {
-    dispatch(actions.getUserInfo(params))
-  },
+  getUserInfo: (params) => dispatch(actions.getUserInfo(params)),
+  getTargetList: (params) => dispatch(actions.getTargetList(params)),
   chooseCurrentTarget: (params) => dispatch(actions.chooseCurrentTarget(params))
 }))
 class Index extends Component {
@@ -25,18 +25,18 @@ class Index extends Component {
     super(props)
 
     this.state = {
-      targetList: [],
       loading: false,
 
     }
     
     this.goToAddTarget = this.goToAddTarget.bind(this)
-    this.goToEditTarget = this.goToEditTarget.bind(this)
+    this.goToTargetDetail = this.goToTargetDetail.bind(this)
     this.loading = this.loading.bind(this)
+
   }
 
   componentWillMount () {
-    const { getUserInfo } = this.props
+    const { getUserInfo, getTargetList } = this.props
 
     Taro.login({
       success: async (res) => {
@@ -44,18 +44,22 @@ class Index extends Component {
           this.loading(true)
           getUserInfo({
             jsCode: res.code,
-            resolved: async res => {
-              this.loading(false)
-
+            resolved: res => {
               // 查询用户名下的目标，并展示
-              const targetList = await server.getTargetListServer({
-                appUserNum: res.appUserNum
-              })
-              this.setState({
-                targetList
+              getTargetList({
+                appUserNum: res.appUserNum,
+                resolved: (res) => {
+                  this.loading(false)
+                },
+                rejected: (rej) => {
+                  this.loading(false)
+                }
               })
             },
-            rejected: rej => {}
+            rejected: rej => {
+              console.log(rej)
+              this.loading(false)
+            }
           })
           
           
@@ -77,6 +81,10 @@ class Index extends Component {
 
   componentDidHide () { }
 
+  componentWillReceiveProps(props) {
+    console.log(props)
+  }
+
   config = {
     navigationBarTitleText: '葱匆'
   }
@@ -95,44 +103,48 @@ class Index extends Component {
     })
   }
 
-  goToEditTarget(target) {
+  goToTargetDetail(target) {
     const { chooseCurrentTarget } = this.props
     chooseCurrentTarget(target)
     Taro.navigateTo({
-      url: '/pages/editTarget/editTarget'
+      url: '/pages/pickedRecords/pickedRecords'
     })
   }
 
-  _renderTargetList() {
+  renderTargetList() {
     const {
       targetList
-    } = this.state
-
+    } = this.props
+    
     return (
       <View>
         {
           targetList.map((target, ind) => {
             return (
                 <View 
+                  className="p-2 pt-3 border-00 taget-item"
                   key={target.targetNum}
                   onClick={() => {
-                    this.goToEditTarget(target)
+                    this.goToTargetDetail(target)
                   }}
                 >
                   <View>
                     { target.targetName }
                   </View>
-                  <View>
-                    打卡次数：{
-                      target.targetPickCount
-                    }
-                  </View> 
+                  
                   {
                     target.lastPickTime ? 
                       <View>
-                        上次打卡时间：{
-                          moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
-                        }
+                        <View>
+                          打卡次数：{
+                            target.targetPickCount
+                          }
+                        </View> 
+                        <View>
+                          上次打卡时间：{
+                            moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
+                          }
+                        </View>
                       </View> : ''
                   }
                 </View>
@@ -145,12 +157,11 @@ class Index extends Component {
 
   render () {
     const {
-      targetList,
       loading
     } = this.state
     return (
       <View>
-        <View>
+        <View className="head">
           <View className="d-flex p-3">
             <Image src={avatar} className="avatar"/>
             <View className="ml-3">
@@ -167,9 +178,9 @@ class Index extends Component {
             </AtButton>
           </View>
         </View>
-        <ScrollView>
+        <ScrollView className="target-list" scrollY>
           {
-            this._renderTargetList()
+            this.renderTargetList()
           }
         </ScrollView>
         <AtActivityIndicator 

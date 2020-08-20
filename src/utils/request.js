@@ -23,7 +23,7 @@ const request = (url, data, method = 'GET') => {
           resolve(data && data.data)
         } else {
           Taro.showToast({
-            title: data && data.msg ? data.msg : '系统错误，请检查网络连接或联系客服',
+            title: data && data.message ? data.message : '系统错误，请检查网络连接或联系客服',
             icon: "none"
           })
           reject(data && data.data)

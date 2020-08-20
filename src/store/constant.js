@@ -9,3 +9,7 @@ export const CHOOSE_CURRENT_TARGET = "CHOOSE_CURRENT_TARGET"
 export const DELETE_TARGET = "DELETE_TARGET"
 
 export const LOGIN = "LOGIN"
+
+export const PICK_TARGET = "PICK_TARGET"
+
+export const GET_PICKED_RECORDS = "GET_PICKED_RECORDS"
