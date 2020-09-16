@@ -1,4 +1,4 @@
-import { post, get, deleteRequest } from '../utils/request'
+import { post, get, deleteRequest, upload } from '../utils/request'
 
 export const getTargetListServer = (params) => {
   return get('/target/list', params)

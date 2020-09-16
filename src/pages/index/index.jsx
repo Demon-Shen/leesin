@@ -13,11 +13,17 @@ import './index.scss'
 
 @connect((state) => ({
   currentTarget: state.target.currentTarget,
-  targetList: state.target.targetList
+  targetList: state.target.targetList,
+  appUserNum: state.userInfo.appUserNum,
+  appUserAvatarUrl: state.userInfo.appUserAvatarUrl,
+  appUserName: state.userInfo.appUserName,
+  appUserWxAccredit: state.userInfo.appUserWxAccredit
 }), (dispatch) => ({
   getUserInfo: (params) => dispatch(actions.getUserInfo(params)),
   getTargetList: (params) => dispatch(actions.getTargetList(params)),
-  chooseCurrentTarget: (params) => dispatch(actions.chooseCurrentTarget(params))
+  chooseCurrentTarget: (params) => dispatch(actions.chooseCurrentTarget(params)),
+  signIn: params => dispatch(actions.signIn(params)),
+  saveWxInfo: params => dispatch(actions.saveWxInfo(params))
 }))
 class Index extends Component {
 
@@ -32,12 +38,11 @@ class Index extends Component {
     this.goToAddTarget = this.goToAddTarget.bind(this)
     this.goToTargetDetail = this.goToTargetDetail.bind(this)
     this.loading = this.loading.bind(this)
-
+    this.signIn = this.signIn.bind(this)
   }
 
   componentWillMount () {
     const { getUserInfo, getTargetList } = this.props
-
     Taro.login({
       success: async (res) => {
         if (res.errMsg === 'login:ok') {
@@ -111,6 +116,39 @@ class Index extends Component {
     })
   }
 
+  signIn() {
+    const { saveWxInfo, appUserNum } = this.props
+    Taro.getUserInfo({
+      withCredentials: true,
+      success: e => {
+        console.log(e)
+        if (e.errMsg === 'getUserInfo:ok') {
+          const {
+            avatarUrl,
+            nickName,
+            gender
+          } = e.userInfo
+          this.loading(true)
+          saveWxInfo({
+            appUserName: encodeURI(nickName),
+            appUserGender: gender,
+            appUserAvatarUrl: avatarUrl,
+            appUserNum,
+            resolved: res => {
+              this.loading(false)
+            },
+            rejected: rej => {
+              this.loading(false)
+            }
+          })
+          
+        }
+      },
+      fail: rej => {
+        Taro.showToast('需要授权获取个人信息')
+      }
+    })
+  }
   renderTargetList() {
     const {
       targetList
@@ -159,24 +197,42 @@ class Index extends Component {
     const {
       loading
     } = this.state
+    const {
+      appUserNum,
+      appUserAvatarUrl,
+      appUserName,
+      appUserWxAccredit
+    } = this.props
     return (
       <View>
         <View className="head">
-          <View className="d-flex p-3">
-            <Image src={avatar} className="avatar"/>
-            <View className="ml-3">
-              <View className="">用户名</View>
-            </View>
-          </View>
-          <View>
+          {
+            appUserWxAccredit ?
+            <View>
+              <View className="d-flex p-3">
+                <Image src={appUserAvatarUrl} className="avatar"/>
+                <View className="ml-3">
+                  <View className="">{appUserName}</View>
+                </View>
+              </View>
+              <View>
+                <AtButton 
+                  type="secondary" 
+                  className="add-target"
+                  onClick={this.goToAddTarget}
+                >
+                  添加任务
+                </AtButton>
+              </View>
+            </View> : 
             <AtButton 
-              type="secondary" 
-              className="add-target"
-              onClick={this.goToAddTarget}
+              openType="getUserInfo"
+              // onClick={this.signIn}
+              onGetUserInfo={this.signIn}
             >
-              添加任务
+              授权登陆
             </AtButton>
-          </View>
+          }
         </View>
         <ScrollView className="target-list" scrollY>
           {
