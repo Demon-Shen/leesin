@@ -3,7 +3,6 @@ import Index from './pages/index/index'
 import configStore from './store/index';
 import actions from './store/actions/index'
 
-import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
 import './style/util.css'
 import './app.scss'
 import { Provider } from '@tarojs/redux'

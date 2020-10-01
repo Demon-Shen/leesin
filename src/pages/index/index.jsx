@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { ScrollView, View } from '@tarojs/components'
+import { ScrollView, View, Image } from '@tarojs/components'
 import { AtButton, AtActivityIndicator, AtList, AtListItem } from 'taro-ui'
 import moment from 'moment'
 
-import avatar from '../../asset/img/avatar.png'
-import server from '../../server/index'
+import banner from '../../asset/img/banner.png'
 
 import { connect } from '@tarojs/redux';
 import actions from '../../store/actions/index'
@@ -160,7 +159,7 @@ class Index extends Component {
           targetList.map((target, ind) => {
             return (
                 <View 
-                  className="p-2 pt-3 border-00 taget-item"
+                  className="p-2 pt-3 taget-item"
                   key={target.targetNum}
                   onClick={() => {
                     this.goToTargetDetail(target)
@@ -205,6 +204,7 @@ class Index extends Component {
     } = this.props
     return (
       <View>
+        <Image className="bg-banner" src={banner} />
         <View className="head">
           {
             appUserWxAccredit ?
@@ -228,6 +228,7 @@ class Index extends Component {
             <AtButton 
               openType="getUserInfo"
               // onClick={this.signIn}
+              type="secondary"
               onGetUserInfo={this.signIn}
             >
               授权登陆

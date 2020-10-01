@@ -1,0 +1,12 @@
+$color-brand: #e5a373;
+$color-brand-light: #ecba96;
+$color-brand-dark: #b7825c;
+@import "~taro-ui/dist/style/index.scss";
+.bg-banner {
+  // width: 100%;
+  // height: 100%;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  opacity: 0.8;
+}

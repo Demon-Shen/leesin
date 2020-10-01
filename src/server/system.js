@@ -5,6 +5,5 @@ export const getOssConfigServer = (params) => {
 }
 
 export const uploadFileServer = (params) => {
-  console.log(params)
   return upload('', params)
 }

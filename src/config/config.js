@@ -1,6 +1,6 @@
 const devConfig = {
   api: "http://localhost:8010",
-  ossUrl: "https://leesin-congcong.oss-cn-shanghai.aliyuncs.com/"
+  ossUrl: "https://leesin-congcong.oss-cn-shanghai.aliyuncs.com/",
 }
 
 const proConfig = {

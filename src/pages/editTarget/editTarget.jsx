@@ -4,7 +4,9 @@ import { connect } from '@tarojs/redux';
 import { View } from '@tarojs/components';
 import actions from '../../store/actions/index'
 
+import './editTarget.scss'
 import avatar from '../../asset/img/avatar.png'
+import banner from '../../asset/img/banner.png'
 
 @connect((state) => ({
   currentTarget: state.target.currentTarget,
@@ -31,6 +33,7 @@ class EditTarget extends Component {
     this.onReset = this.onReset.bind(this)
     this.deleteTarget = this.deleteTarget.bind(this)
     this.loading = this.loading.bind(this)
+    this.getFileKeyByCurrentTarget = this.getFileKeyByCurrentTarget.bind(this)
   }
 
   componentWillMount() {
@@ -56,17 +59,19 @@ class EditTarget extends Component {
 
     uploadFile({
       ...ossConfig,
-      key: new Date().getTime(),
+      key: this.getFileKeyByCurrentTarget(),
       fileName: 'file',
       filePath: avatar,
       resolved: res => {
         if (currentTarget) {
+          console.currentTarget
           // 修改
           updateTarget({
             ...currentTarget,
             targetName,
             targetContent,
             appUserNum,
+            targetBgUrl: res,
             resolved: (res) => {
               this.loading(false)
               Taro.showToast({
@@ -90,6 +95,7 @@ class EditTarget extends Component {
             targetName,
             targetContent,
             appUserNum,
+            targetBgUrl: res,
             resolved: (res) => {
               this.loading(false)
               Taro.showToast({
@@ -112,10 +118,18 @@ class EditTarget extends Component {
         this.loading(false)
         Taro.showToast({
           title: '图片上传失败',
-          icon: 'error',
         })
       }
     })    
+  }
+
+  getFileKeyByCurrentTarget() {
+    const { currentTarget } = this.props
+    if (currentTarget) {
+      return currentTarget.targetNum
+    } else {
+      return new Date().getTime()
+    }
   }
 
   onReset() {
@@ -148,7 +162,7 @@ class EditTarget extends Component {
           icon: 'success',
           complete: () => {
             setTimeout(() => {
-              Taro.navigateBack()
+              Taro.navigateBack(2) // 返回到首页
             }, 1000);
           }
         })
@@ -178,6 +192,7 @@ class EditTarget extends Component {
     
     return (
       <View>
+        <Image className="bg-banner" src={banner} />
         <AtForm
           onSubmit={this.onSubmit}
           onReset={this.onReset}
@@ -204,18 +219,23 @@ class EditTarget extends Component {
               }}
             />
           </View>
-          <AtButton 
+          <AtButton
+            type="secondary" 
             loading={loading} 
             formType='submit'
           >
               提交
           </AtButton>
-          <AtButton formType='reset'>重置</AtButton>
+          <AtButton 
+            formType='reset'
+            type="secondary"
+          >重置</AtButton>
           {
             currentTarget ? 
               <AtButton 
                 loading={loading} 
-                onClick={this.deleteTarget}   
+                onClick={this.deleteTarget}
+                type="secondary"
               >
                 删除
               </AtButton> : ''
