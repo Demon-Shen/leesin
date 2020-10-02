@@ -1,6 +1,7 @@
 $color-brand: #e5a373;
 $color-brand-light: #ecba96;
 $color-brand-dark: #b7825c;
+$color-border-base: #b7825c;
 @import "~taro-ui/dist/style/index.scss";
 .bg-banner {
   // width: 100%;
@@ -9,4 +10,6 @@ $color-brand-dark: #b7825c;
   height: 100vh;
   position: absolute;
   opacity: 0.8;
+  background-image: url('./asset/img/banner.png');
+  background-size: cover;
 }

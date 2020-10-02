@@ -566,15 +566,15 @@
   border: #999 1rpx solid!important;
 }
 
-.text-DD {
+.text-dd {
   color: #DDDDDD!important;
 }
 
-.bg-DD {
+.bg-dd {
   background-color: #DDDDDD!important;
 }
 
-.border-DD {
+.border-dd {
   border: #DDDDDD 1rpx solid!important;
 }
 
@@ -588,6 +588,18 @@
 
 .border-theme {
   border: #4C9673 1rpx solid!important;
+}
+
+.text-none {
+  color: transparent!important;
+}
+
+.bg-none {
+  background-color: transparent!important;
+}
+
+.border-none {
+  border: transparent 1rpx solid!important;
 }
 
 .border-dashed {
@@ -608,6 +620,22 @@
 
 .border-double {
   border-style: double!important;
+}
+
+.border-top {
+  border-top: 1rpx solid #f5f5f5!important;
+}
+
+.border-left {
+  border-left: 1rpx solid #f5f5f5!important;
+}
+
+.border-right {
+  border-right: 1rpx solid #f5f5f5!important;
+}
+
+.border-bottom {
+  border-bottom: 1rpx solid #f5f5f5!important;
 }
 
 .fs-20 {
@@ -1740,6 +1768,42 @@
 
 .opacity {
   opacity: 1!important;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+.shadow-none {
+  box-shadow: none!important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)!important;
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)!important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175)!important;
+}
+
+.left-0 {
+  left: 0 !important;
+}
+
+.top-0 {
+  top: 0 !important;
+}
+
+.right-0 {
+  right: 0 !important;
+}
+
+.bottom-0 {
+  bottom: 0 !important;
 }
 
 /*# sourceMappingURL=/wx.581c3222.css.map */

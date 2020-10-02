@@ -1,12 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { AtForm, AtInput, AtTextarea, AtButton } from 'taro-ui'
+
 import { connect } from '@tarojs/redux';
-import { View } from '@tarojs/components';
 import actions from '../../store/actions/index'
 
 import './editTarget.scss'
 import avatar from '../../asset/img/avatar.png'
-import banner from '../../asset/img/banner.png'
 
 @connect((state) => ({
   currentTarget: state.target.currentTarget,
@@ -191,11 +190,11 @@ class EditTarget extends Component {
     const { currentTarget } = this.props
     
     return (
-      <View>
-        <Image className="bg-banner" src={banner} />
+      <View className="bg-banner">
         <AtForm
           onSubmit={this.onSubmit}
           onReset={this.onReset}
+          className="bg-none"
         >
           <AtInput 
             title="目标名称"
@@ -219,26 +218,34 @@ class EditTarget extends Component {
               }}
             />
           </View>
-          <AtButton
-            type="secondary" 
-            loading={loading} 
-            formType='submit'
-          >
-              提交
-          </AtButton>
-          <AtButton 
-            formType='reset'
-            type="secondary"
-          >重置</AtButton>
+          <View className="px-3 py-1">
+            <AtButton
+              type="secondary" 
+              loading={loading} 
+              formType='submit'
+            >
+                提交
+            </AtButton>
+          </View>
+          <View className="px-3 py-1">
+            <AtButton 
+              formType='reset'
+              type="secondary"
+            >
+              重置
+            </AtButton>
+          </View>
           {
             currentTarget ? 
-              <AtButton 
-                loading={loading} 
-                onClick={this.deleteTarget}
-                type="secondary"
-              >
-                删除
-              </AtButton> : ''
+              <View className="px-3 py-1">
+                <AtButton 
+                  loading={loading} 
+                  onClick={this.deleteTarget}
+                  type="secondary"
+                >
+                  删除
+                </AtButton>
+              </View> : ''
           }
         </AtForm>
       </View>

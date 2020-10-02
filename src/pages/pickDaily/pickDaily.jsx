@@ -57,7 +57,7 @@ class pickDaily extends Component {
       loading
     } = this.state
     return (
-      <div>
+      <div className="bg-banner">
         <AtForm>
           <AtTextarea 
             placeholder="打卡内容" 
@@ -65,10 +65,12 @@ class pickDaily extends Component {
             onChange={e => this.setState({
               pickMemo: e
             })}
+            type="secondary"
           />
           <AtButton
             onClick={this.pickTarget}
             loading={loading}
+            type="secondary"
           >
             打卡
           </AtButton>

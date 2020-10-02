@@ -27,6 +27,7 @@ export default class PickedList extends Component{
     }
     this.goToPickTarget = this.goToPickTarget.bind(this)
     this.goToEditTarget = this.goToEditTarget.bind(this)
+    this.sharePoster = this.sharePoster.bind(this)
     this.loading = this.loading.bind(this)
   }
   componentWillMount() {
@@ -72,6 +73,12 @@ export default class PickedList extends Component{
     })
   }
 
+  sharePoster() {
+    Taro.navigateTo({
+      url: '/pages/sharePoster/sharePoster'
+    })
+  }
+
   _renderPickedRecordList() {
     const { pickedRecords } = this.props
     return (
@@ -104,7 +111,7 @@ export default class PickedList extends Component{
     const { currentTarget } = this.props
 
     return (
-      <View>
+      <View className="bg-banner">
         <View>
           {
             currentTarget.targetContent
@@ -119,13 +126,24 @@ export default class PickedList extends Component{
         }
         <AtButton 
           onClick={this.goToPickTarget}
+          type="secondary"
+          className="mx-3 my-1"
         >
           打卡
         </AtButton>
         <AtButton
           onClick={this.goToEditTarget}
+          type="secondary"
+          className="mx-3 my-1"
         >
           编辑
+        </AtButton>
+        <AtButton
+          onClick={this.sharePoster}
+          type="secondary"
+          className="mx-3 my-1"
+        >
+          分享
         </AtButton>
       </View>
     )

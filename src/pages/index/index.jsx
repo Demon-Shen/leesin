@@ -3,8 +3,6 @@ import { ScrollView, View, Image } from '@tarojs/components'
 import { AtButton, AtActivityIndicator, AtList, AtListItem } from 'taro-ui'
 import moment from 'moment'
 
-import banner from '../../asset/img/banner.png'
-
 import { connect } from '@tarojs/redux';
 import actions from '../../store/actions/index'
 
@@ -158,33 +156,33 @@ class Index extends Component {
         {
           targetList.map((target, ind) => {
             return (
-                <View 
-                  className="p-2 pt-3 taget-item"
-                  key={target.targetNum}
-                  onClick={() => {
-                    this.goToTargetDetail(target)
-                  }}
-                >
-                  <View>
-                    { target.targetName }
-                  </View>
-                  
-                  {
-                    target.lastPickTime ? 
-                      <View>
-                        <View>
-                          打卡次数：{
-                            target.targetPickCount
-                          }
-                        </View> 
-                        <View>
-                          上次打卡时间：{
-                            moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
-                          }
-                        </View>
-                      </View> : ''
-                  }
+              <View 
+                className="p-2 pt-3 taget-item"
+                key={target.targetNum}
+                onClick={() => {
+                  this.goToTargetDetail(target)
+                }}
+              >
+                <View>
+                  { target.targetName }
                 </View>
+                
+                {
+                  target.lastPickTime ? 
+                    <View>
+                      <View>
+                        打卡次数：{
+                          target.targetPickCount
+                        }
+                      </View> 
+                      <View>
+                        上次打卡时间：{
+                          moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
+                        }
+                      </View>
+                    </View> : ''
+                }
+              </View>
             )
           })
         }
@@ -203,8 +201,7 @@ class Index extends Component {
       appUserWxAccredit
     } = this.props
     return (
-      <View>
-        <Image className="bg-banner" src={banner} />
+      <View className="bg-banner">
         <View className="head">
           {
             appUserWxAccredit ?

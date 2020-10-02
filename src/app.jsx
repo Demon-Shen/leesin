@@ -32,7 +32,8 @@ class App extends Component {
       'pages/index/index',
       'pages/editTarget/editTarget',
       'pages/pickedRecords/pickedRecords',
-      'pages/pickDaily/pickDaily'
+      'pages/pickDaily/pickDaily',
+      'pages/sharePoster/sharePoster'
     ],
     window: {
       backgroundTextStyle: 'light',
