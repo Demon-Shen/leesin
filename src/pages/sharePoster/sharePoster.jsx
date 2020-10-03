@@ -25,18 +25,11 @@ export default class SharePoster extends Component {
       pickedRecords 
     } = this.props
     const ctx = Taro.createCanvasContext(POSTER, this)
-    Taro.getImageInfo({
-      src: '../../asset/img/banner.png',
-      success: (res) => {
-        if (res.errMsg === 'getImageInfo:ok') {
-          ctx.drawImage('../../asset/img/banner.png', 0, 0, posterWidth, posterHeight)
-          ctx.draw()
-          ctx.fillText(currentTarget.targetName, 100, 100)
-          ctx.fillText(`坚持打卡的第${pickedRecords.length}天`, 100, 120)
-          ctx.draw(true)  
-        }
-      }
-    })
+    ctx.drawImage(banner, 0, 0, posterWidth, posterHeight)
+    ctx.draw()
+    ctx.fillText(currentTarget.targetName, 100, 100)
+    ctx.fillText(`坚持打卡的第${pickedRecords.length}天`, 100, 120)
+    ctx.draw(true)  
   }
 
   savePoster() {
@@ -47,7 +40,7 @@ export default class SharePoster extends Component {
       width: posterWidth,
       height: posterHeight,
       success: res => {
-        
+
       }
     })
   }
