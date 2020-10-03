@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import { connect } from '@tarojs/redux';
 import actions from '../../store/actions/index'
+import avatar from '../../asset/img/avatar.png'
 
 import './index.scss'
 
@@ -198,37 +199,38 @@ class Index extends Component {
       appUserName,
       appUserWxAccredit
     } = this.props
+
     return (
       <View className="bg-banner">
         <View className="head">
-          {
-            appUserWxAccredit ?
+          <View>
+            <View className="d-flex p-3">
+              <Image src={appUserAvatarUrl || avatar} className="avatar"/>
+              <View className="ml-3">
+                {
+                  appUserWxAccredit ? 
+                    <View className="">{appUserName}</View>
+                    : <AtButton 
+                        openType="getUserInfo"
+                        type="primary"
+                        onGetUserInfo={this.signIn}
+                        size="small"
+                      >
+                        授权登陆
+                      </AtButton>
+                }
+              </View>
+            </View>
             <View>
-              <View className="d-flex p-3">
-                <Image src={appUserAvatarUrl} className="avatar"/>
-                <View className="ml-3">
-                  <View className="">{appUserName}</View>
-                </View>
-              </View>
-              <View>
-                <AtButton 
-                  type="secondary" 
-                  className="add-target"
-                  onClick={this.goToAddTarget}
-                >
-                  添加任务
-                </AtButton>
-              </View>
-            </View> : 
-            <AtButton 
-              openType="getUserInfo"
-              // onClick={this.signIn}
-              type="secondary"
-              onGetUserInfo={this.signIn}
-            >
-              授权登陆
-            </AtButton>
-          }
+              <AtButton 
+                type="secondary" 
+                className="add-target"
+                onClick={this.goToAddTarget}
+              >
+                添加任务
+              </AtButton>
+            </View>
+          </View>
         </View>
         <ScrollView className="target-list" scrollY>
           {

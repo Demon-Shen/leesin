@@ -14,7 +14,7 @@ const initState = {
 const actionHandle = {
   [LOGIN]: (state, action) => {
     let payload = action.payload
-    if (payload) {
+    if (payload && payload.appUserName) {
       payload.appUserName = decodeURI(payload.appUserName)
     }
     return {
@@ -23,7 +23,7 @@ const actionHandle = {
   },
   [SAVE_WX_INFO]: (state, action) => {
     let payload = action.payload
-    if (payload) {
+    if (payload && payload.appUserName) {
       payload.appUserName = decodeURI(payload.appUserName)
     }
     return {

@@ -9,6 +9,6 @@ const proConfig = {
 }
 
 export default {
-  // ...devConfig,
-  ...proConfig
+  ...devConfig,
+  // ...proConfig
 }
