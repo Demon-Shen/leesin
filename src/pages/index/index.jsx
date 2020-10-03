@@ -176,7 +176,7 @@ class Index extends Component {
                       </View> 
                       <View>
                         上次打卡时间：{
-                          moment(new Date(target.lastPickTime)).format('YYYY-MM-DD hh:mm')
+                          moment((target.lastPickTime)).format('YYYY-MM-DD hh:mm')
                         }
                       </View>
                     </View> : ''
