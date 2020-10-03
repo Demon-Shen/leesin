@@ -56,70 +56,76 @@ class EditTarget extends Component {
     const { appUserNum, currentTarget, ossConfig, updateTarget, addTarget, uploadFile } = this.props
     this.loading(true)
 
-    uploadFile({
-      ...ossConfig,
-      key: this.getFileKeyByCurrentTarget(),
-      fileName: 'file',
-      filePath: avatar,
-      resolved: res => {
-        if (currentTarget) {
-          console.currentTarget
-          // 修改
-          updateTarget({
-            ...currentTarget,
-            targetName,
-            targetContent,
-            appUserNum,
-            targetBgUrl: res,
-            resolved: (res) => {
-              this.loading(false)
-              Taro.showToast({
-                title: '修改成功',
-                icon: 'success',
-                complete: () => {
-                  setTimeout(() => {
-                    Taro.navigateBack()
-                  }, 1000);
-                }
-              })
-            },
-            rejected: (rej) => {
-              this.loading(false)
+      
+    if (currentTarget) {
+      // 修改
+      updateTarget({
+        ...currentTarget,
+        targetName,
+        targetContent,
+        appUserNum,
+        targetBgUrl: '', // target背景图片
+        resolved: (res) => {
+          this.loading(false)
+          Taro.showToast({
+            title: '修改成功',
+            icon: 'success',
+            complete: () => {
+              setTimeout(() => {
+                Taro.navigateBack()
+              }, 1000);
             }
           })
-          
-        } else {
-          // 新增
-          addTarget({
-            targetName,
-            targetContent,
-            appUserNum,
-            targetBgUrl: res,
-            resolved: (res) => {
-              this.loading(false)
-              Taro.showToast({
-                title: '添加成功',
-                icon: 'success',
-                complete: () => {
-                  setTimeout(() => {
-                    Taro.navigateBack()
-                  }, 1000);
-                }
-              })
-            },
-            rejected: (rej) => {
-              this.loading(false)
-            }
-          })
+        },
+        rejected: (rej) => {
+          this.loading(false)
         }
-      },
-      rejected: rej => {
-        this.loading(false)
-        Taro.showToast({
-          title: '图片上传失败',
-        })
-      }
-    })    
+      })
+      
+    } else {
+      // 新增
+      addTarget({
+        targetName,
+        targetContent,
+        appUserNum,
+        targetBgUrl: '', // target背景图片
+        resolved: (res) => {
+          this.loading(false)
+          Taro.showToast({
+            title: '添加成功',
+            icon: 'success',
+            complete: () => {
+              setTimeout(() => {
+                Taro.navigateBack()
+              }, 1000);
+            }
+          })
+        },
+        rejected: (rej) => {
+          this.loading(false)
+        }
+      })
+    }
+    // 选择图片上传
+    // Taro.chooseImage({
+    //   success: res => {
+    //     const tempFilePaths = res.tempFilePaths
+    //     uploadFile({
+    //       ...ossConfig,
+    //       key: this.getFileKeyByCurrentTarget(),
+    //       fileName: 'file',
+    //       filePath: tempFilePaths[0],
+    //       resolved: res => {
+    //       },
+    //       rejected: rej => {
+    //         this.loading(false)
+    //         Taro.showToast({
+    //           title: '图片上传失败',
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
   }
 
   getFileKeyByCurrentTarget() {

@@ -4,11 +4,11 @@ const devConfig = {
 }
 
 const proConfig = {
-  api: "http://49.234.233.180/leesin",
+  api: "https://www.cncongcong.com/leesin",
   ossUrl: "https://leesin-congcong.oss-cn-shanghai.aliyuncs.com/"
 }
 
 export default {
-  ...devConfig,
-  // ...proConfig
+  // ...devConfig,
+  ...proConfig
 }

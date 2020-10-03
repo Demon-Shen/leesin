@@ -5,8 +5,6 @@ const api = config.api
 const ossUrl = config.ossUrl
 
 const checkResult = (data) => {
-  console.log(data)
-  console.log(data.code)
   if (data && data.code === 0) {
     return true
   } else {

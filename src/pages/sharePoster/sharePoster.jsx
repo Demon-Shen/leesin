@@ -29,7 +29,6 @@ export default class SharePoster extends Component {
       src: '../../asset/img/banner.png',
       success: (res) => {
         if (res.errMsg === 'getImageInfo:ok') {
-          console.log(res)
           ctx.drawImage('../../asset/img/banner.png', 0, 0, posterWidth, posterHeight)
           ctx.draw()
           ctx.fillText(currentTarget.targetName, 100, 100)
@@ -48,7 +47,7 @@ export default class SharePoster extends Component {
       width: posterWidth,
       height: posterHeight,
       success: res => {
-        console.log(res)
+        
       }
     })
   }

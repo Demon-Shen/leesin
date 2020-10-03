@@ -59,7 +59,6 @@ class Index extends Component {
               })
             },
             rejected: rej => {
-              console.log(rej)
               this.loading(false)
             }
           })
@@ -84,7 +83,7 @@ class Index extends Component {
   componentDidHide () { }
 
   componentWillReceiveProps(props) {
-    console.log(props)
+
   }
 
   config = {
@@ -118,7 +117,6 @@ class Index extends Component {
     Taro.getUserInfo({
       withCredentials: true,
       success: e => {
-        console.log(e)
         if (e.errMsg === 'getUserInfo:ok') {
           const {
             avatarUrl,
@@ -157,7 +155,7 @@ class Index extends Component {
           targetList.map((target, ind) => {
             return (
               <View 
-                className="p-2 pt-3 taget-item"
+                className="p-2 pt-3 target-item"
                 key={target.targetNum}
                 onClick={() => {
                   this.goToTargetDetail(target)
